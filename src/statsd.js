@@ -35,7 +35,7 @@ module.exports.register = function (server, options, next) {
         if (request._route === specials.notFound.route) {
             path = '/{notFound*}';
         }
-        else if (request._route === specials.options.route) {
+        else if (specials.options !== null && request._route === specials.options.route) {
             path = '/{cors*}';
         }
         else if (request._route.path === '/' && request._route.method === 'options') {
