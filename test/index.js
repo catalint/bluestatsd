@@ -173,15 +173,19 @@ describe( 'bluestatsd()', () => {
         } );
 
         const get = (request, reply) => reply( 'Success!' );
-        const err = (request, reply) => reply( new Error() );
 
-        server.route( { method: ['GET', 'OPTIONS'], path: '/', handler: get, config: { cors: true } } );
-        server.route( { method: 'GET', path: '/err', handler: err, config: { cors: true } } );
-        server.route( { method: 'GET', path: '/test/{param}', handler: get, config: { cors: true } } );
+        server.route( { method: 'GET', path: '/test/{param}', handler: get });
 
         server.register( {
             register: Plugin
-        }, done );
+        }, () => {
+
+            server.inject( '/test/123', (res) => {
+
+                Assert( res.statusCode === 200 );
+                done();
+            } );
+        } );
     } );
 
 } );
